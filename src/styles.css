@@ -1,0 +1,28 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    color: #333;
+    margin: 20px;
+}
+
+header #main-header {
+    background-color: #0078d4;
+    color: white;
+    padding: 20px;
+    text-align:center;
+}
+
+.resume-section {
+    margin-bottom: 30px;
+}
+h2 {
+    border-bottom: 2px solid #0078d4;
+    padding-bottom: 5px;
+}
+
+#visitor-count {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #0078d4;
+}
+
