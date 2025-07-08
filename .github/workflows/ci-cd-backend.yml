@@ -13,6 +13,18 @@ jobs:
   terraform:
     name: Terraform Apply
     runs-on: ubuntu-latest
+    env: 
+      # Azure credentials
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      # Terraform variables
+      TF_VAR_resource_group_name: cloud-resume-rg
+      TF_VAR_location: uksouth
+      TF_VAR_storage_account_name: zchresumestoragedev
+      TF_VAR_cdn_endpoint_name: zchresume-cdn
+      TF_VAR_cosmosdb_account_name: zchresume-cosmos
+      TF_VAR_function_storage_name: zchfuncstorage
+      TF_VAR_function_app_name: zchresume-api
     defaults:
       run:
         working-directory: ${{ env.TF_WORKING_DIR }}
@@ -20,7 +32,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: LOgin to Azure
+      - name: Login to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
@@ -43,7 +55,7 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve plan.tfplan
+        run: terraform apply -input=false -auto-approve plan.tfplan
 
   deploy-function:
     name: Build, Test & Deploy Function

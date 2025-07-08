@@ -69,7 +69,6 @@ venv.bak/
 *.tfstate.*
 .terraform/
 **/.terraform/
-.terraform.lock.hcl
 *.tfplan
 *.tfvars
 crash.log
