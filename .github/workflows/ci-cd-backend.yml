@@ -47,8 +47,7 @@ jobs:
             -backend-config="container_name=tfstate" \
             -backend-config="key=terraform.tfstate"
 
-      - name: Terraform Plan
-        run: terraform plan -out plan.tfplan
+     
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
