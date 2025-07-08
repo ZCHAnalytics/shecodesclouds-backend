@@ -1,53 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Zulfia's Cloud Resume with Azure</title>
-    <link rel="stylesheet" href="styles.css"> <!--TO DO-->
+  <meta charset="UTF-8">
+  <title>Zulfia's Cloud Resume with Azure</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header id="main-header">
-        <h1>Zulfia</h1>
-        <p>Cloud, AI & DevOps Enthusiast</p>
-    </header>
-    <main id="resume-content">
+  <header id="main-header">
+    <h1>Zulfia</h1>
+    <p>Cloud, AI & DevOps Enthusiast</p>
+  </header>
 
-        <section id="skills" class="resume-section">
-            <h2>Skills</h2>
-            <ul>
-                <li>Azure</li>
-                <li>Databases</li>
-                <li>Python</li>
-                <li>Iaas</li>
-                <li>Kubernetes</li>
-            </ul>
-        </section>
+  <main id="resume-content">
 
-        <section id="projects" class="resume-section">
-            <h2>Projects</h2>
-            <ul>
-                <li>Azure Database Migration</li>
-                <li>AWS ETL Pipeline Development</li>
-            </ul>
-        </section>
-        <section id="education" class="resume-section">
-            <h2>Education</h2>
-            <ul>
-                <li>AiCore AI&Data Bootcamp, UK, 2024</li>
-                <li>MPhil, University of Cambridge, UK, 2010</li>
-            </ul>
-        </section>
-        <section id="visitor-count-section">
-            <h2>Visitor Counter</h2>
-            <p>Number of visitors: <span id="visitor-count"Loading...</span></p> 
-            
-        </section>
-    </main>
+    <section id="skills" class="resume-section">
+      <h2>Skills</h2>
+      <ul>
+        <li>Azure</li>
+        <li>Databases</li>
+        <li>Python</li>
+        <li>IaaS</li>
+        <li>Kubernetes</li>
+      </ul>
+    </section>
 
-    <footer id="main-footer">
-        <p>© 2025 Zulfia C.H. | Last updated June 2025</p>
-    </footer>
-    <script src="visitor-counter.js"></script>
+    <section id="projects" class="resume-section">
+      <h2>Projects</h2>
+      <ul>
 
+        <!-- Cloud Resume Challenge -->
+        <li>
+          <strong>Cloud Resume Challenge</strong><br>
+          A static website hosted in Azure Storage with a serverless visitor counter backed by an Azure Function & Cosmos DB.<br>
+          <a href="https://zchresume.azureedge.net" target="_blank" rel="noopener">Live Site</a> |
+          <a href="https://github.com/yourusername/cloud-resume-challenge" target="_blank" rel="noopener">GitHub Repo</a>
+        </li>
+
+        <!-- Retail Sales ETL -->
+        <li>
+          <strong><a href="https://github.com/yourusername/retail-sales-etl" target="_blank" rel="noopener">
+            Retail Sales ETL &amp; Data Analysis
+          </a></strong>
+          <ul>
+            <li>Developed OOP Python scripts to extract & transform &gt;120k rows from AWS databases, APIs, JSON, PDF & CSV sources.</li>
+            <li>Designed a star-schema database with five dimension tables; wrote &gt;10 complex SQL queries for business insights (e.g., top‐performing regions).</li>
+          </ul>
+        </li>
+
+        <!-- Database Migration -->
+        <li>
+          <strong><a href="https://github.com/yourusername/azure-db-migration" target="_blank" rel="noopener">
+            Database Migration to Azure
+          </a></strong>
+          <ul>
+            <li>Performed a 100% database restoration for safe testing in a fresh development environment.</li>
+            <li>Implemented disaster recovery and integrated Microsoft Entra ID for identity management.</li>
+          </ul>
+        </li>
+
+        <!-- Serverless Deployment -->
+        <li>
+          <strong><a href="https://github.com/yourusername/serverless-deployment" target="_blank" rel="noopener">
+            Serverless Deployment
+          </a></strong>
+          <ul>
+            <li>Configured seven Azure PaaS components (App Service, Functions, Storage, Cosmos DB, etc.), including private endpoints.</li>
+            <li>Automated HTTP‐triggered scaling to handle up to 10,000 concurrent requests.</li>
+          </ul>
+        </li>
+
+        <!-- Kubernetes Challenge -->
+        <li>
+          <strong><a href="https://github.com/yourusername/k8s-windows-challenge" target="_blank" rel="noopener">
+            Kubernetes Challenge
+          </a></strong><br>
+          Adapting a CentOS-based Kubernetes Resume Challenge to Windows using PowerShell & Terraform.
+          <ul>
+            <li>Key skills: Kubernetes (cluster creation, rolling updates, autoscaling), Docker, PowerShell, Azure CLI & Terraform, CI/CD, ConfigMaps & Secrets.</li>
+            <li>Infrastructure: Sample e-commerce app, custom Dockerfiles, Kubernetes manifests, CLI helper scripts.</li>
+            <li>Extras: Helm chart packaging, persistent MariaDB storage, GitHub Actions pipeline with safe secret handling, CRLF→LF conversion for Windows.</li>
+          </ul>
+        </li>
+
+      </ul>
+    </section>
+
+    <section id="education" class="resume-section">
+      <h2>Education</h2>
+      <ul>
+        <li>AiCore AI &amp; Data Bootcamp, UK, 2024</li>
+        <li>MPhil, University of Cambridge, UK, 2010</li>
+      </ul>
+    </section>
+
+    <section id="visitor-count-section">
+      <h2>Visitor Counter</h2>
+      <p>
+        Number of visitors: 
+        <span id="visitor-count">Loading...</span>
+      </p>
+    </section>
+
+  </main>
+
+  <footer id="main-footer">
+    <p>© 2025 Zulfia C.H. | Last updated June 2025</p>
+  </footer>
+
+  <script src="visitor-counter.js"></script>
 </body>
 </html>

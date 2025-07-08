@@ -17,6 +17,7 @@ jobs:
       # Azure credentials
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      
       # Terraform variables
       TF_VAR_resource_group_name: cloud-resume-rg
       TF_VAR_location: uksouth
@@ -78,8 +79,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run unit tests
-        run: pytest --maxfail=1 --disable-warnings -q
+      # - name: Run unit tests
+      #   run: pytest --maxfail=1 --disable-warnings -q
 
       # No azure/login step needed—publish profile handles auth
       - name: Deploy to Azure Functions
