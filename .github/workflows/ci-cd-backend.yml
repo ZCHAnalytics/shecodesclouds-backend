@@ -54,7 +54,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: tfplan
-          path: ${{ env.TF_WORKING_DIR }}/plan.tfplan
+          path: plan.tfplan
       - name: Download Terraform Plan
         uses: actions/download-artifact@v3
         with:
