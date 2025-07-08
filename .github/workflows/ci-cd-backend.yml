@@ -5,8 +5,8 @@ on:
     branches: [ main ]
 
 env:
-  TF_WORKING_DIR: .cloud-resume-iac
-  FUNCTION_SRC_DIR: .zch-visitor-counter
+  TF_WORKING_DIR: cloud-resume-iac
+  FUNCTION_SRC_DIR: zch-visitor-counter
 
 jobs:
 
