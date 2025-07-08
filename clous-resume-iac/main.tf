@@ -29,13 +29,13 @@ resource "azurerm_storage_account" "resume_storage" {
   location                 = azurerm_resource_group.resume_rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
-  
-  static_website {
-    index_document     = "index.html"
-    error_404_document = "404.html"
-  }
 }
+resource "azurerm_storage_account_static_website" "resume" {
+  storage_account_id = azurerm_storage_account.resume_storage.id
 
+  index_document     = "index.html"
+  error_404_document = "404.html"
+}
 # CDN Profile
 resource "azurerm_cdn_profile" "resume_cdn" {
   name                = "resume-cdn-profile"

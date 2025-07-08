@@ -6,7 +6,6 @@ variable "resource_group_name" {
 variable "location" {
   description = "Azure region"
   type        = string
-  default     = "UK South"
 }
 
 variable "storage_account_name" {
@@ -15,7 +14,7 @@ variable "storage_account_name" {
 }
 
 variable "cdn_endpoint_name" {
-  description = "Name of the CDN endpoint"
+  description = "Name of the CDN endpoint, before .azureedge.net"
   type        = string
 }
 
