@@ -55,11 +55,13 @@ jobs:
         with:
           name: tfplan
           path: plan.tfplan
+
       - name: Download Terraform Plan
         uses: actions/download-artifact@v3
         with:
           name: tfplan
-          path: ${{ env.TF_WORKING_DIR }}\    
+          path: ${{ env.TF_WORKING_DIR }}
+          
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve plan.tfplan
