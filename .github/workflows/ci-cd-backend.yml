@@ -41,18 +41,6 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -out plan.tfplan
 
-      - name: Save Terraform Plan
-        uses: actions/upload-artifact@v4
-        with:
-          name: tfplan
-          path: plan.tfplan
-
-      - name: Download Terraform Plan
-        uses: actions/download-artifact@v4
-        with:
-          name: tfplan
-          path: ${{ env.TF_WORKING_DIR }}
-
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve plan.tfplan
