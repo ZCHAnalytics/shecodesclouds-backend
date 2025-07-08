@@ -14,13 +14,24 @@
   <main id="resume-content">
 
     <section id="skills" class="resume-section">
-      <h2>Skills</h2>
+      <h2>Skills & Certifications</h2>
       <ul>
-        <li>Azure</li>
-        <li>Databases</li>
-        <li>Python</li>
-        <li>IaaS</li>
-        <li>Kubernetes</li>
+        <!-- Certifications -->
+        <li>Microsoft Azure Fundamentals (AZ-900) – Certified</li>
+        <li>Microsoft Azure AI Fundamentals (AI-900) – Certified</li>
+
+        <!-- Cloud & IaC -->
+        <li>Terraform (IaC) • GitHub Actions (CI/CD) </li>
+
+        <!-- Serverless & PaaS -->
+        <li>Azure Functions • Cosmos DB (Table API)</li>
+
+        <!-- Programming & Scripting -->
+        <li>Python • PowerShell & Bash • SQL</li>
+
+        <!-- Containers & Orchestration -->
+        <li>Docker • Kubernetes</li>
+
       </ul>
     </section>
 
@@ -30,26 +41,30 @@
 
         <!-- Cloud Resume Challenge -->
         <li>
-          <strong>Cloud Resume Challenge</strong><br>
-          A static website hosted in Azure Storage with a serverless visitor counter backed by an Azure Function & Cosmos DB.<br>
-          <a href="https://zchresume.azureedge.net" target="_blank" rel="noopener">Live Site</a> |
-          <a href="https://github.com/yourusername/cloud-resume-challenge" target="_blank" rel="noopener">GitHub Repo</a>
+          <strong><a href="https://github.com/ZCHAnalytics/cloud-resume-challenge" target="_blank" rel="noopener">
+            Static resume site on Azure with a serverless visitor counter
+          </a></strong>  
+          <ul>
+            <li>Terraform-managed infra: Storage (static website), CDN, Cosmos DB, Function App</li>
+            <li>Python Azure Function + Cosmos DB Table API for atomic visitor counting</li>
+            <li>GitHub Actions CI/CD: infra &amp; code deployment, end-to-end testing</li>
+          </ul>
         </li>
 
         <!-- Retail Sales ETL -->
         <li>
-          <strong><a href="https://github.com/yourusername/retail-sales-etl" target="_blank" rel="noopener">
+          <strong><a href="https://github.com/ZCHAnalytics/aws-python-data-centralisation" target="_blank" rel="noopener">
             Retail Sales ETL &amp; Data Analysis
           </a></strong>
           <ul>
             <li>Developed OOP Python scripts to extract & transform &gt;120k rows from AWS databases, APIs, JSON, PDF & CSV sources.</li>
-            <li>Designed a star-schema database with five dimension tables; wrote &gt;10 complex SQL queries for business insights (e.g., top‐performing regions).</li>
+            <li>Designed a star-schema database with five dimension tables; wrote &gt;10 complex SQL queries for business insights (e.g., top-performing regions).</li>
           </ul>
         </li>
 
         <!-- Database Migration -->
         <li>
-          <strong><a href="https://github.com/yourusername/azure-db-migration" target="_blank" rel="noopener">
+          <strong><a href="https://github.com/ZCHAnalytics/azure-database-migration" target="_blank" rel="noopener">
             Database Migration to Azure
           </a></strong>
           <ul>
@@ -58,20 +73,9 @@
           </ul>
         </li>
 
-        <!-- Serverless Deployment -->
-        <li>
-          <strong><a href="https://github.com/yourusername/serverless-deployment" target="_blank" rel="noopener">
-            Serverless Deployment
-          </a></strong>
-          <ul>
-            <li>Configured seven Azure PaaS components (App Service, Functions, Storage, Cosmos DB, etc.), including private endpoints.</li>
-            <li>Automated HTTP‐triggered scaling to handle up to 10,000 concurrent requests.</li>
-          </ul>
-        </li>
-
         <!-- Kubernetes Challenge -->
         <li>
-          <strong><a href="https://github.com/yourusername/k8s-windows-challenge" target="_blank" rel="noopener">
+          <strong><a href="https://github.com/ZCHAnalytics/kubernetes-resume-challenge" target="_blank" rel="noopener">
             Kubernetes Challenge
           </a></strong><br>
           Adapting a CentOS-based Kubernetes Resume Challenge to Windows using PowerShell & Terraform.
@@ -96,7 +100,7 @@
     <section id="visitor-count-section">
       <h2>Visitor Counter</h2>
       <p>
-        Number of visitors: 
+        Number of visitors:
         <span id="visitor-count">Loading...</span>
       </p>
     </section>
