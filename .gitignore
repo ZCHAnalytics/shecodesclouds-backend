@@ -1,0 +1,125 @@
+# Old cypress learning folder
+cypress-realworld-testing-course-app/
+
+# Old function app with A/B testing
+resume-visitor-fn/
+
+# Old terraform file without CDN
+terraform-resume/
+
+# Playwright tests 
+tests/
+
+# Azure Functions
+bin/
+obj/
+csx/
+.vs/
+edge/
+Publish/
+*.user
+*.suo
+*.cscfg
+*.Cache
+project.lock.json
+/packages
+/TestResults
+/tools/NuGet.exe
+/App_Data
+/secrets
+/data
+.secrets
+appsettings.json
+local.settings.json
+.func/
+func-cli/
+*.zip
+__blobstorage__/
+__queuestorage__/
+__azurite_db*__.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.python_packages/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# Python Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Conda
+.conda/
+
+# Terraform - CRITICAL
+*.tfstate
+*.tfstate.*
+.terraform/
+**/.terraform/
+.terraform.lock.hcl
+*.tfplan
+*.tfvars
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+**/.terraform/*
+
+# Node/NPM
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+
+# Cypress - Exclude entire cypress folder except the e2e tests we need
+cypress/*
+!cypress/e2e/
+!cypress/e2e/api.cy.js
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.iws
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
