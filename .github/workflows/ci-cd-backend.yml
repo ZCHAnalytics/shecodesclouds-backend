@@ -110,5 +110,5 @@ jobs:
       - name: Run Cypress Tests
         run: |
           npx cypress run \
-            --config baseUrl=https://zchresume.azureedge.net \
+            --config baseUrl=https://zchresume.azureedge.net supportFile=false\
             --env apiUrl=https://zchresume-api.azurewebsites.net/api/visitorcounter
