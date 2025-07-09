@@ -34,12 +34,15 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+      
+      - name: Prepare log file
+        run: touch terraform.log
 
       - name: Terraform Plan
         env:
           TF_LOG: DEBUG
-          TF_LOG_PATH: ${{ env.TF_WORKING_DIR }}/terraform.log
-        run: terraform plan -out=plan.tfplan
+          TF_LOG_PATH: terraform.log
+        run: terraform plan -var-file="terraform.tfvars" -out=plan.tfplan
       
       - name: Show Terraform debug log
         run: cat ${{ env.TF_WORKING_DIR }}/terraform.log
