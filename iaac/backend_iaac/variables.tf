@@ -10,18 +10,6 @@ variable "location" {
   default     = "uksouth"
 }
 
-variable "storage_account_name" {
-  description = "Name of the storage account"
-  type        = string
-  default     = "zchresumestoragedev"
-}
-
-variable "cdn_endpoint_name" {
-  description = "Name of the CDN endpoint"
-  type        = string
-  default     = "shecodesclouds"
-}
-
 variable "cosmosdb_account_name" {
   description = "Name of the CosmosDB account"
   type        = string

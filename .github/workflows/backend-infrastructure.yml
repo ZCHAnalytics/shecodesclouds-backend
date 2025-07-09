@@ -1,0 +1,47 @@
+name: Backend Infrastructure
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'iaac/backend_iaac/**'
+      - '.github/workflows/backend-infrastructure.yml'
+  workflow_dispatch:
+
+env:
+  TF_WORKING_DIR: iaac/backend_iaac
+
+jobs:
+  deploy-backend-infra:
+    name: Deploy Backend Infrastructure
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ${{ env.TF_WORKING_DIR }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: |
+          terraform plan -out=plan.tfplan
+          terraform apply -auto-approve plan.tfplan
+          
+      - name: Output Details
+        run: |
+          echo "### Backend Infrastructure Deployed! 🔧" >> $GITHUB_STEP_SUMMARY
+          echo "- **CosmosDB**: $(terraform output -raw cosmosdb_endpoint)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Function App**: $(terraform output -raw function_app_url)" >> $GITHUB_STEP_SUMMARY

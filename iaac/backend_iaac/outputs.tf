@@ -1,21 +1,4 @@
 # -----------------------------------------------------------------------------
-# Frontend / Website Outputs
-# -----------------------------------------------------------------------------
-
-output "static_website_url" {
-  value = azurerm_storage_account.resume_storage.primary_web_endpoint
-  description = "The URL of the static website"
-}
-
-output "storage_account_name" {
-  value = azurerm_storage_account.resume_storage.name
-  description = "The name of the storage account"
-}
-output "cdn_endpoint_url" {
-  value = "https://${azurerm_cdn_endpoint.resume_endpoint.name}.azureedge.net"
-  description = "The CDN endpoint URL"
-}
-# -----------------------------------------------------------------------------
 # Database Outputs
 # -----------------------------------------------------------------------------
 
@@ -31,7 +14,7 @@ output "cosmosdb_primary_key" {
 }
 
 # -----------------------------------------------------------------------------
-# Backend / API Outputs
+# API Outputs
 # -----------------------------------------------------------------------------
 
 output "function_app_url" {
@@ -42,4 +25,10 @@ output "function_app_url" {
 output "function_app_name" {
   value = azurerm_linux_function_app.resume_function.name
   description = "The name of the function app"
+}
+
+output "application_insights_key" {
+  description = "Application Insights Instrumentation Key"
+  value       = azurerm_application_insights.resume_insights.instrumentation_key
+  sensitive   = true
 }
