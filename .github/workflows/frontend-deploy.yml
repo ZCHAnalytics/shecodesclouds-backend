@@ -1,0 +1,44 @@
+name: Deploy Frontend to Azure Storage
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - '.github/workflows/deploy-frontend.yml'  # Adjust if filename differs
+  workflow_dispatch:   # Enables manual trigger button in GitHub Actions UI
+
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: src
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Upload web files to Azure Blob Storage
+        run: |
+          az storage blob upload-batch \
+            --account-name zchresumestoragedev \
+            --auth-mode key \
+            --destination "\$web" \
+            --source . \
+            --overwrite
+        env:
+          AZURE_STORAGE_ACCOUNT: zchresumestoragedev
+
+      - name: Purge Azure CDN Endpoint
+        run: |
+          az cdn endpoint purge \
+            --resource-group cloud-resume-rg \
+            --profile-name resume-cdn-profile \
+            --name shecodesclouds \
+            --content-paths '/*'

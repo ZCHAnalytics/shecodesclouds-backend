@@ -91,29 +91,3 @@ jobs:
         with:
           app-name: zchresume-api                   # FUNCTION_APP_NAME
           package: .
-  
-  deploy-frontend:
-    name: Deploy Frontend to Azure Storage
-    needs: terraform
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: src
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Upload web files to Azure Blob Storage
-        run: |
-          az storage blob upload-batch  `
-            --account-name zchresumestoragedev `
-            --destination '$web' `
-            --source . `
-            --overwrite
