@@ -106,6 +106,18 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        
+      - name: Wait for frontend (CDN) to be available
+        run: |
+          for i in {1..10}; do
+            echo "Checking if frontend is available (attempt $i)..."
+            if curl -sSf https://zchresume.azureedge.net > /dev/null; then
+              echo "Frontend is available!"
+              break
+            fi
+            echo "Not ready yet. Retrying in 10 seconds..."
+            sleep 10
+          done
 
       - name: Run Cypress Tests
         run: |
