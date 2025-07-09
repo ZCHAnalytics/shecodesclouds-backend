@@ -29,7 +29,6 @@ jobs:
         run: |
           az storage blob upload-batch \
             --account-name zchresumestoragedev \
-            --auth-mode login \
             --destination \$web \
             --source . \
             --overwrite
