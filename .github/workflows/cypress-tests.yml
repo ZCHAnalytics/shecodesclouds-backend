@@ -31,7 +31,7 @@ jobs:
               echo "Frontend is available!"
               break
             fi
-            echo "Not ready yet. Retrying in 10 seconds..."
+            echo "Not ready yet. Retry in 10 seconds..."
             sleep 10
           done
 
