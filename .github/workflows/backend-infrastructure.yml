@@ -38,9 +38,12 @@ jobs:
       - name: Terraform Plan
         env:
           TF_LOG: DEBUG
-          TF_LOG_PATH: ./terraform.log
+          TF_LOG_PATH: ${{ env.TF_WORKING_DIR }}/terraform.log
         run: terraform plan -out=plan.tfplan
-
+      
+      - name: Show Terraform debug log
+        run: cat ${{ env.TF_WORKING_DIR }}/terraform.log
+      
       - name: Upload Terraform Plan
         uses: actions/upload-artifact@v4
         with:
