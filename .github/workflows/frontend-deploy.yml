@@ -4,11 +4,12 @@ on:
   push:
     paths:
       - 'src/**'
-      - '.github/workflows/deploy-frontend.yml'  # Adjust if filename differs
-  workflow_dispatch:   # Enables manual trigger button in GitHub Actions UI
+      - '.github/workflows/deploy-frontend.yml'
+  workflow_dispatch:  # ✅ manual trigger from GitHub
 
 jobs:
   deploy-frontend:
+    name: Upload to Blob and Purge CDN
     runs-on: ubuntu-latest
 
     defaults:
@@ -24,19 +25,19 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Upload web files to Azure Blob Storage
+      - name: Upload static files to Azure Blob Storage
         run: |
           az storage blob upload-batch \
             --account-name zchresumestoragedev \
-            --auth-mode key \
-            --destination "\$web" \
+            --auth-mode login \
+            --destination \$web \
             --source . \
             --overwrite
-        env:
-          AZURE_STORAGE_ACCOUNT: zchresumestoragedev
 
       - name: Purge Azure CDN Endpoint
         run: |
+          echo "Waiting 30s to allow blob propagation..."
+          sleep 30
           az cdn endpoint purge \
             --resource-group cloud-resume-rg \
             --profile-name resume-cdn-profile \
