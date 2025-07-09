@@ -50,7 +50,6 @@ jobs:
           name: terraform-plan
           path: plan.tfplan
 
-
   apply-backend-infra:
     name: Apply Backend Infrastructure
     runs-on: ubuntu-latest
