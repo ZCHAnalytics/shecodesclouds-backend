@@ -31,7 +31,8 @@ jobs:
             --account-name zchresumestoragedev \
             --destination \$web \
             --source . \
-            --overwrite
+            --overwrite \
+            --auth-mode key
 
       - name: Purge Azure CDN Endpoint
         run: |
