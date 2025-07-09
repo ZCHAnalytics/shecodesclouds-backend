@@ -1,20 +1,23 @@
 variable "resource_group_name" {
   description = "Name of the resource group"
   type        = string
+  default     = "cloud-resume-rg"
 }
 
 variable "location" {
   description = "Azure region"
   type        = string
+  default     = "uksouth"
 }
 
 variable "storage_account_name" {
   description = "Name of the storage account"
   type        = string
+  default     = "zchresumestoragedev"
 }
 
 variable "cdn_endpoint_name" {
-  description = "Name of the CDN endpoint, before .azureedge.net"
+  description = "Name of the CDN endpoint"
   type        = string
   default     = "shecodesclouds"
 }
@@ -22,15 +25,17 @@ variable "cdn_endpoint_name" {
 variable "cosmosdb_account_name" {
   description = "Name of the CosmosDB account"
   type        = string
+  default     = "zchresume-cosmos"
 }
 
-# Step 5 APi Infrastructure 
 variable "function_storage_name" {
-  description = "Storage account name for function app"
+  description = "Name of the function storage account"
   type        = string
+  default     = "zchfuncstorage"
 }
 
 variable "function_app_name" {
   description = "Name of the function app"
   type        = string
+  default     = "zchresume-api"
 }
