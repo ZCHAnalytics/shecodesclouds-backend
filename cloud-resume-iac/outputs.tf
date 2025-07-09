@@ -1,3 +1,7 @@
+# -----------------------------------------------------------------------------
+# Frontend / Website Outputs
+# -----------------------------------------------------------------------------
+
 output "static_website_url" {
   value = azurerm_storage_account.resume_storage.primary_web_endpoint
   description = "The URL of the static website"
@@ -11,6 +15,9 @@ output "cdn_endpoint_url" {
   value = "https://${azurerm_cdn_endpoint.resume_endpoint.name}.azureedge.net"
   description = "The CDN endpoint URL"
 }
+# -----------------------------------------------------------------------------
+# Database Outputs
+# -----------------------------------------------------------------------------
 
 output "cosmosdb_endpoint" {
   value = azurerm_cosmosdb_account.resume_cosmos.endpoint
@@ -23,7 +30,10 @@ output "cosmosdb_primary_key" {
   description = "The primary key of the CosmosDB account"
 }
 
-# Step 5 Convert APi infra
+# -----------------------------------------------------------------------------
+# Backend / API Outputs
+# -----------------------------------------------------------------------------
+
 output "function_app_url" {
   value = "https://${azurerm_linux_function_app.resume_function.default_hostname}"
   description = "The URL of the function app"

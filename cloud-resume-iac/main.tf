@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "resume_rg" {
   location = var.location
 }
 
-# Storage Account
+# Storage Account for Static Website
 resource "azurerm_storage_account" "resume_storage" {
   name                     = var.storage_account_name
   resource_group_name      = azurerm_resource_group.resume_rg.name
@@ -32,7 +32,6 @@ resource "azurerm_storage_account" "resume_storage" {
 }
 resource "azurerm_storage_account_static_website" "resume" {
   storage_account_id = azurerm_storage_account.resume_storage.id
-
   index_document     = "index.html"
   error_404_document = "404.html"
 }
