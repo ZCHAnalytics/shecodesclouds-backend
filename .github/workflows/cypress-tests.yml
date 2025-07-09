@@ -40,4 +40,4 @@ jobs:
           npx cypress install
           npx cypress run \
             --config baseUrl=https://shecodesclouds.azureedge.net,supportFile=false \
-            --env apiUrl=https://shecodesclouds.azurewebsites.net/api/visitorcounter
+            --env apiUrl=https://zchresume-api.azurewebsites.net/api/visitorcounter
