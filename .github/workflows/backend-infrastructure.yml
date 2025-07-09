@@ -40,7 +40,7 @@ jobs:
         env:
           TF_LOG: DEBUG
           TF_LOG_PATH: terraform.log
-        run: terraform plan -var-file="iaac/terraform.tfvars" -out=plan.tfplan
+        run: terraform plan -var-file="terraform.tfvars" -out=plan.tfplan
       
       - name: Show Terraform debug log
         run: cat iaac/terraform.log
