@@ -1,29 +1,39 @@
 variable "resource_group_name" {
   description = "Name of the resource group"
   type        = string
-  default     = "resume-backend-rg"
 }
 
 variable "location" {
   description = "Azure region"
   type        = string
-  default     = "uksouth"
 }
 
-variable "cosmosdb_account_name" {
-  description = "Name of the CosmosDB account"
+variable "storage_account_name" {
+  description = "Name of the storage account"
   type        = string
-  default     = "zchresume-cosmos"
+}
+
+variable "cdn_endpoint_name" {
+  description = "Name of the CDN endpoint"
+  type        = string
+}
+
+variable "frontend_origin_urls" {
+  description = "List of allowed frontend origins for CORS"
+  type        = list(string)
 }
 
 variable "function_storage_name" {
-  description = "Name of the function storage account"
+  description = "Name of the storage account for the Function App"
   type        = string
-  default     = "zchfuncstorage"
 }
 
 variable "function_app_name" {
-  description = "Name of the function app"
+  description = "Name of the Azure Function App"
   type        = string
-  default     = "zchresume-api"
+}
+
+variable "cosmosdb_account_name" {
+  description = "Name of the Cosmos DB account"
+  type        = string
 }

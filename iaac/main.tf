@@ -102,10 +102,7 @@ resource "azurerm_linux_function_app" "resume_function" {
       python_version          = "3.10"
     }
     cors {
-      allowed_origins = [
-        azurerm_storage_account.resume_storage.primary_web_endpoint,
-        "https://${azurerm_cdn_endpoint.resume_endpoint.name}.azureedge.net"
-      ]
+      allowed_origins = var.frontend_origin_urls
     }
   }
 
