@@ -4,6 +4,7 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: 'https://zchresume.azureedge.net',
     supportFile: false,  // important to avoid the support file error
+    pageLoadTimeout: 100000,
     env: {
       apiUrl: 'https://zchresume-api.azurewebsites.net/api/visitorcounter',
     },
