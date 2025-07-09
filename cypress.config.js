@@ -2,7 +2,7 @@ const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: 'https://zchresume.azureedge.net',
+    baseUrl: 'https://shecodesclouds.azureedge.net',
     supportFile: false,  // important to avoid the support file error
     pageLoadTimeout: 100000,
     env: {

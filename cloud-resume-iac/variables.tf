@@ -16,7 +16,7 @@ variable "storage_account_name" {
 variable "cdn_endpoint_name" {
   description = "Name of the CDN endpoint, before .azureedge.net"
   type        = string
-  default     = "zchresume-cdn"
+  default     = "shecodesclouds"
 }
 
 variable "cosmosdb_account_name" {

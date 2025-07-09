@@ -22,7 +22,7 @@ jobs:
       TF_VAR_resource_group_name: cloud-resume-rg
       TF_VAR_location: uksouth
       TF_VAR_storage_account_name: zchresumestoragedev
-      TF_VAR_cdn_endpoint_name: zchresume-cdn
+      TF_VAR_cdn_endpoint_name: shecodesclouds
       TF_VAR_cosmosdb_account_name: zchresume-cosmos
       TF_VAR_function_storage_name: zchfuncstorage
       TF_VAR_function_app_name: zchresume-api
@@ -62,6 +62,7 @@ jobs:
     name: Build, Test & Deploy Function
     needs: terraform
     runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: ${{ env.FUNCTION_SRC_DIR }}
@@ -88,5 +89,31 @@ jobs:
       - name: Deploy to Azure Functions
         uses: azure/functions-action@v1
         with:
-          app-name: zchresume-api                   # your FUNCTION_APP_NAME
+          app-name: zchresume-api                   # FUNCTION_APP_NAME
           package: .
+  
+  deploy-frontend:
+    name: Deploy Frontend to Azure Storage
+    needs: terraform
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: src
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Upload web files to Azure Blob Storage
+        run: |
+          az storage blob upload-batch  `
+            --account-name zchresumestoragedev `
+            --destination '$web' `
+            --source . `
+            --overwrite
