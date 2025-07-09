@@ -43,7 +43,7 @@ jobs:
         run: terraform plan -var-file="terraform.tfvars" -out=plan.tfplan
       
       - name: Show Terraform debug log
-        run: cat iaac/terraform.log
+        run: cat terraform.log
       
       - name: Upload Terraform Plan
         uses: actions/upload-artifact@v4
