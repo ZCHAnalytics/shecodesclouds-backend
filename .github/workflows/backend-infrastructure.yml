@@ -8,8 +8,6 @@ on:
       - '.github/workflows/backend-infrastructure.yml'
   workflow_dispatch:
 
-env:
-  TF_WORKING_DIR: iaac
 
 jobs:
   plan-backend-infra:
@@ -18,7 +16,7 @@ jobs:
     
     defaults:
       run:
-        working-directory: ${{ env.TF_WORKING_DIR }}
+        working-directory: iaac
 
     steps:
       - name: Checkout
@@ -42,10 +40,10 @@ jobs:
         env:
           TF_LOG: DEBUG
           TF_LOG_PATH: terraform.log
-        run: terraform plan -var-file="terraform.tfvars" -out=plan.tfplan
+        run: terraform plan -var-file="iaac/terraform.tfvars" -out=plan.tfplan
       
       - name: Show Terraform debug log
-        run: cat ${{ env.TF_WORKING_DIR }}/terraform.log
+        run: cat iaac/terraform.log
       
       - name: Upload Terraform Plan
         uses: actions/upload-artifact@v4
@@ -60,7 +58,7 @@ jobs:
     
     defaults:
       run:
-        working-directory: ${{ env.TF_WORKING_DIR }}
+        working-directory: iaac
 
     steps:
       - name: Checkout
