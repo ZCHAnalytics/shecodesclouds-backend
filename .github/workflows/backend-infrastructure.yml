@@ -4,12 +4,12 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'iaac/backend_iaac/**'
+      - 'iaac/**'
       - '.github/workflows/backend-infrastructure.yml'
   workflow_dispatch:
 
 env:
-  TF_WORKING_DIR: iaac/backend_iaac
+  TF_WORKING_DIR: iaac
 
 jobs:
   deploy-backend-infra:

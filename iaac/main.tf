@@ -15,10 +15,13 @@ provider "azurerm" {
     }
   }
 }
-# Data source to reference existing resource group
-data "azurerm_resource_group" "resume_rg" {
-  name = var.resource_group_name
+
+# Create the resource group
+resource "azurerm_resource_group" "resume_rg" {
+  name     = var.resource_group_name
+  location = var.location
 }
+
 
 # CosmosDB Account
 resource "azurerm_cosmosdb_account" "resume_cosmos" {
