@@ -5,7 +5,7 @@ on:
     paths:
       - 'src/**'
       - '.github/workflows/deploy-frontend.yml'
-  workflow_dispatch:  # ✅ manual trigger from GitHub
+  workflow_dispatch:  # ✅ Github  manual trigger 
 
 jobs:
   deploy-frontend:
