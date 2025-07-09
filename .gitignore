@@ -71,7 +71,7 @@ venv.bak/
 .terraform/
 **/.terraform/
 *.tfplan
-*.tfvars
+
 crash.log
 crash.*.log
 override.tf
