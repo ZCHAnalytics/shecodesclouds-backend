@@ -42,7 +42,14 @@ jobs:
           name: sbom
           path: sbom.json
 
-          
+      - name: Install Grype
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b .
+
+      - name: Scan for Vulnerabilities with Grype 
+        run: |
+          ./grype sbom:sbom.json --fail-on critical -o table        
+        
       - name: Setup Azure Functions Core Tools
         run: |
           wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
