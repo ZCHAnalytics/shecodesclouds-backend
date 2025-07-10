@@ -32,3 +32,7 @@ output "application_insights_key" {
   value       = azurerm_application_insights.resume_insights.instrumentation_key
   sensitive   = true
 }
+
+output "api_endpoint" {
+  value = "https://${azurerm_linux_function_app.resume_function.default_hostname}/api/VisitorCounter"
+}

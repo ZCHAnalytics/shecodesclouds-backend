@@ -16,7 +16,6 @@ terraform {
   }
 }
 
-
 provider "azurerm" {
   features {
     resource_group {
@@ -30,7 +29,6 @@ resource "azurerm_resource_group" "resume_rg" {
   name     = var.resource_group_name
   location = var.location
 }
-
 
 # CosmosDB Account
 resource "azurerm_cosmosdb_account" "resume_cosmos" {
@@ -63,6 +61,13 @@ resource "azurerm_cosmosdb_account" "resume_cosmos" {
 # CosmosDB Table
 resource "azurerm_cosmosdb_table" "visitor_counter" {
   name                = "VisitorCounter"
+  resource_group_name = azurerm_resource_group.resume_rg.name
+  account_name        = azurerm_cosmosdb_account.resume_cosmos.name
+}
+
+# Table for storing individual visitors
+resource "azurerm_cosmosdb_table" "visitors" {
+  name                = "Visitors"
   resource_group_name = azurerm_resource_group.resume_rg.name
   account_name        = azurerm_cosmosdb_account.resume_cosmos.name
 }

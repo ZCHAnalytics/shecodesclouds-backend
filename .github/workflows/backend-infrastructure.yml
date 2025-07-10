@@ -82,3 +82,6 @@ jobs:
           echo "### Backend Infrastructure Deployed! 🔧" >> $GITHUB_STEP_SUMMARY
           echo "- **CosmosDB**: $(terraform output -raw cosmosdb_endpoint)" >> $GITHUB_STEP_SUMMARY
           echo "- **Function App**: $(terraform output -raw function_app_url)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Function App Name**: zch-resume-function-app" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "⏳ **Next Step**: Function code will be deployed automatically" >> $GITHUB_STEP_SUMMARY
