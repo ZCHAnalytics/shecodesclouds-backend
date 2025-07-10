@@ -28,6 +28,19 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
+      
+      - name: Install Syft
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b
+
+      - name: Generate SBOM
+        run: syft ./backend -o json > sbom.json
+
+      - name: Upload SBOM Artifcat
+        uses: actions/upload-artifact@v3
+        with:
+          name: sbom
+          path: sbom.json
           
       - name: Setup Azure Functions Core Tools
         run: |
