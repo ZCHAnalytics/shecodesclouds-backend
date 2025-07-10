@@ -83,9 +83,11 @@ jobs:
           fi
 
       - name: List backend tests folder
+        working-directory: backend
         run: ls -l tests/
 
       - name: Run Backend Auth Tests
+        working-directory: backend
         run: |
           pip install pytest requests
           pytest tests/auth_tests.py
