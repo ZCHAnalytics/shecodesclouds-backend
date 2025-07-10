@@ -4,6 +4,6 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "python",
     "_comment": "The suggested format of the connection string is below",
-    "COSMOS_CONNECTION_STRING": "AccountEndpoint=https://sample-cosmos-account.table.cosmos.azure.com:443/;AccountKey=SAMPLE_KEY_HERE;"
+    "COSMOS_ENDPOINT": "AccountEndpoint=https://sample-cosmos-account.table.cosmos.azure.com:443/;AccountKey=SAMPLE_KEY_HERE;"
   }
 }
