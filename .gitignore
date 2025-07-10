@@ -1,15 +1,3 @@
-git # Old cypress learning folder
-cypress-realworld-testing-course-app/
-
-# Old function app with A/B testing
-resume-visitor-fn/
-
-# Old terraform file without CDN
-terraform-resume/
-
-# Playwright tests 
-tests/
-
 # Azure Functions
 .funcignore
 bin/
