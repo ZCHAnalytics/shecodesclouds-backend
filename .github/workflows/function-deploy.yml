@@ -6,9 +6,9 @@ on:
     paths:
       - 'backend/**'
       - '.github/workflows/backend-deploy.yml'
-      
+
   workflow_dispatch:
-  
+
   workflow_run:
     workflows: ["Backend Infrastructure"]
     types:
@@ -19,23 +19,19 @@ jobs:
     name: Deploy Function Code
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      
+
       - name: Install Syft
         run: |
           curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
-
-      - name: Run Grype Vulnerability Scan
-        run: | 
-          grype backend -o table
 
       - name: Generate SBOM
         run: syft backend -o json > sbom.json
@@ -48,41 +44,36 @@ jobs:
 
       - name: Install Grype
         run: |
-          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b .
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
 
-      - name: Scan for Vulnerabilities with Grype 
+      - name: Scan for Vulnerabilities with Grype
         run: |
-          ./grype sbom:sbom.json --fail-on critical -o table        
-        
+          grype sbom:sbom.json --fail-on critical -o table
+
       - name: Setup Azure Functions Core Tools
         run: |
           wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
           sudo dpkg -i packages-microsoft-prod.deb
           sudo apt-get update
           sudo apt-get install -y azure-functions-core-tools-4
-          
+
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
+
       - name: Deploy Function
         working-directory: backend
         run: |
           pip install -r requirements.txt
           func azure functionapp publish zch-resume-function-app --python
-          
+
       - name: Test Function
         run: |
           echo "### Testing Function Deployment 🧪" >> $GITHUB_STEP_SUMMARY
-          
-          # Wait for function to be ready
           sleep 30
-          
-          # Test the endpoint
           response=$(curl -s https://zch-resume-function-app.azurewebsites.net/api/VisitorCounter?visitorId=test123)
           status=$?
-          
           if [ $status -eq 0 ]; then
             echo "- ✅ Function is responding" >> $GITHUB_STEP_SUMMARY
             echo "- Response: \`$response\`" >> $GITHUB_STEP_SUMMARY
@@ -90,6 +81,7 @@ jobs:
             echo "- ❌ Function test failed" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
+
       - name: Run Backend Auth Tests
         run: |
           pip install pytest requests
