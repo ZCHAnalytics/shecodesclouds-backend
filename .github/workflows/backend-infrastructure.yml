@@ -47,19 +47,17 @@ jobs:
       - name: Show Terraform debug log
         run: cat terraform.log
         
-      - name: List Terraform plan file if exists
-        run: ls -la plan.tfplan || echo "plan.tfplan does not exist"
-      
-      - name: Confirm plan file location
-        run: ls -la iaac/plan.tfplan
-  
+      - name: List Terraform plan file
+        run: ls -la plan.tfplan
+
+      - name: Move plan file for upload
+        run: mv plan.tfplan ../plan.tfplan
+
       - name: Upload Terraform Plan
         uses: actions/upload-artifact@v4
         with:
           name: terraform-plan
-          path: iaac/plan.tfplan
-      - name: Move plan to root for upload
-        run: mv plan.tfplan ../
+          path: plan.tfplan
 
   apply-backend-infra:
     name: Apply Backend Infrastructure
@@ -89,10 +87,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: terraform-plan
-          path: .
+          path: ..
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve plan.tfplan
+        run: terraform apply -auto-approve ../plan.tfplan
           
       - name: Output Details
         run: |
