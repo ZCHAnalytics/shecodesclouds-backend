@@ -3,7 +3,8 @@ from azure.data.tables import TableServiceClient, UpdateMode
 import os
 import logging
 import json
-import traceback  # For better error details
+import traceback
+from datetime import datetime, timezone
 
 app = func.FunctionApp()
 
@@ -14,13 +15,21 @@ logging.basicConfig(level=logging.INFO)
 def VisitorCounter(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('===VISITOR COUNTER FUNCTION CALLED ===')
     
+    # Get visitor ID from query parameter
+    visitor_id = req.params.get('visitorId')
+    if not visitor_id:
+        return func.HttpResponse(
+            json.dumps({"error": "visitorId parameter is required"}),
+            status_code=400,
+            headers={"Content-Type": "application/json"}
+        )
+    
     # Debug: Check environment variables
     cosmos_endpoint = os.environ.get("COSMOS_ENDPOINT")
     cosmos_key      = os.environ.get("COSMOS_KEY")
-    table_name      = "VisitorCounter"
     
     logging.info(f"Cosmos endpoint: {cosmos_endpoint}")
-    logging.info(f"Table name: {table_name}")
+    logging.info(f"Visitor ID: {visitor_id}")
     
     try:
         # Extract account name from endpoint
@@ -28,7 +37,7 @@ def VisitorCounter(req: func.HttpRequest) -> func.HttpResponse:
         # Extract: zchresume-cosmos
         account_name = cosmos_endpoint.split('.')[0].replace('https://', '').replace('http://', '')
 
-        # Build  Table API endoint  
+        # Build  Table API endpoint  
         table_endpoint = f"https://{account_name}.table.cosmos.azure.com:443/"
 
         # Build connection string for Table API
@@ -40,33 +49,86 @@ def VisitorCounter(req: func.HttpRequest) -> func.HttpResponse:
         logging.info("Creating table service client...")
         table_service = TableServiceClient.from_connection_string(conn_str)
         
-        logging.info("Getting table client...")
-        table_client = table_service.get_table_client(table_name=table_name)
+        # Get table clients for both counter and visitors
+        counter_table = table_service.get_table_client(table_name="VisitorCounter")
+        visitors_table = table_service.get_table_client(table_name="Visitors")
         
-        # Counter entity details
-        partition_key = "counter"
-        row_key = "visits"
-        
+        # Check if this visitor has been seen before
+        is_new_visitor = False
         try:
-            entity = table_client.get_entity(partition_key=partition_key, row_key=row_key)
-            current_count = entity.get("count", 0) + 1
-            logging.info(f"Found existing entity with count: {current_count - 1}")
-        except Exception as read_error:
-            logging.info(f"No existing entity, creating new one: {str(read_error)}")
-            current_count = 1
+            visitor_entity = visitors_table.get_entity(
+                partition_key="visitors",
+                row_key=visitor_id
+            )
+            logging.info(f"Returning visitor: {visitor_id}")
+        except Exception:
+            # New visitor
+            is_new_visitor = True
+            logging.info(f"New visitor: {visitor_id}")
+            
+            # Record the new visitor
+            new_visitor = {
+                "PartitionKey": "visitors",
+                "RowKey": visitor_id,
+                "firstVisit": datetime.now(timezone.utc).isoformat(),
+                "lastVisit": datetime.now(timezone.utc).isoformat(),
+                "visitCount": 1
+            }
+            visitors_table.upsert_entity(entity=new_visitor)
+            
+        # Get current unique visitor count
+        try:
+            counter_entity = counter_table.get_entity(
+                partition_key="counter",
+                row_key="uniqueVisitors"
+            )
+            current_count = counter_entity.get("count", 0)
+        except Exception:
+            # First time, create the counter
+            current_count = 0
+            
+        # Only increment if it's a new visitor
+        if is_new_visitor:
+            current_count += 1
+            
+            # Update the unique visitors counter
+            counter_entity = {
+                "PartitionKey": "counter",
+                "RowKey": "uniqueVisitors",
+                "count": current_count,
+                "lastUpdated": datetime.now(timezone.utc).isoformat()
+            }
+            counter_table.upsert_entity(entity=counter_entity, mode=UpdateMode.REPLACE)
+        else:
+            # Update last visit time for returning visitor
+            visitor_entity["lastVisit"] = datetime.now(timezone.utc).isoformat()
+            visitor_entity["visitCount"] = visitor_entity.get("visitCount", 1) + 1
+            visitors_table.upsert_entity(entity=visitor_entity, mode=UpdateMode.MERGE)
         
-        # Update entity
-        entity = {
-            "PartitionKey": partition_key,
-            "RowKey": row_key,
-            "count": current_count
+        # Also track total page views (optional)
+        try:
+            views_entity = counter_table.get_entity(
+                partition_key="counter",
+                row_key="totalViews"
+            )
+            total_views = views_entity.get("count", 0) + 1
+        except Exception:
+            total_views = 1
+            
+        views_entity = {
+            "PartitionKey": "counter",
+            "RowKey": "totalViews",
+            "count": total_views
         }
-        
-        logging.info("Updating entity...")
-        table_client.upsert_entity(entity=entity, mode=UpdateMode.REPLACE)
+        counter_table.upsert_entity(entity=views_entity, mode=UpdateMode.REPLACE)
         
         return func.HttpResponse(
-            json.dumps({"count": current_count}),
+            json.dumps({
+                "uniqueVisitors": current_count,
+                "totalViews": total_views,
+                "isNewVisitor": is_new_visitor,
+                "count": current_count  # Keep for backward compatibility
+            }),
             status_code=200,
             headers={
                 "Content-Type": "application/json",
