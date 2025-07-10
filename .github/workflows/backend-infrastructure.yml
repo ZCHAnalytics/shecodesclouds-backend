@@ -12,17 +12,13 @@ jobs:
   plan-backend-infra:
     name: Plan Backend Infrastructure
     runs-on: ubuntu-latest
-    
-    defaults:
-      run:
-        working-directory: iaac
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: List files in iaac folder
-        run: ls -la
+      - name: List files
+        run: ls -R
 
       - name: Azure Login
         uses: azure/login@v1
@@ -33,40 +29,26 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init
+        working-directory: iaac
         run: terraform init
-      
-      - name: Prepare log file
-        run: touch terraform.log
 
       - name: Terraform Plan
+        working-directory: iaac
         env:
           TF_LOG: DEBUG
           TF_LOG_PATH: terraform.log
         run: terraform plan -var-file="terraform.tfvars" -out=plan.tfplan
-      
-      - name: Show Terraform debug log
-        run: cat terraform.log
-        
-      - name: List Terraform plan file
-        run: ls -la plan.tfplan
-
-      - name: Move plan file for upload
-        run: mv plan.tfplan ../plan.tfplan
 
       - name: Upload Terraform Plan
         uses: actions/upload-artifact@v4
         with:
           name: terraform-plan
-          path: plan.tfplan
+          path: iaac/plan.tfplan
 
   apply-backend-infra:
     name: Apply Backend Infrastructure
     runs-on: ubuntu-latest
     needs: plan-backend-infra
-    
-    defaults:
-      run:
-        working-directory: iaac
 
     steps:
       - name: Checkout
@@ -80,19 +62,22 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Terraform Init
-        run: terraform init
-
       - name: Download Terraform Plan
         uses: actions/download-artifact@v4
         with:
           name: terraform-plan
-          path: ..
+          path: iaac
+
+      - name: Terraform Init
+        working-directory: iaac
+        run: terraform init
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve ../plan.tfplan
-          
+        working-directory: iaac
+        run: terraform apply -auto-approve plan.tfplan
+
       - name: Output Details
+        working-directory: iaac
         run: |
           echo "### Backend Infrastructure Deployed! 🔧" >> $GITHUB_STEP_SUMMARY
           echo "- **CosmosDB**: $(terraform output -raw cosmosdb_endpoint)" >> $GITHUB_STEP_SUMMARY
