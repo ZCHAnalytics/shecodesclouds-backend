@@ -74,12 +74,22 @@ resource "azurerm_cosmosdb_table" "visitors" {
 
 # Step 5: Convert API infrastructure into Terraform
 
+# Create Log Analytics Workspace
+resource "azurerm_log_analytics_workspace" "resume_workspace" {
+  name                = "resume-log-analytics"
+  location            = azurerm_resource_group.resume_rg.location
+  resource_group_name = azurerm_resource_group.resume_rg.name
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
+}
+
 # Application Insights
 resource "azurerm_application_insights" "resume_insights" {
   name                = "resume-app-insights"
   location            = azurerm_resource_group.resume_rg.location
   resource_group_name = azurerm_resource_group.resume_rg.name
   application_type    = "web"
+  workspace_id        = azurerm_log_analytics_workspace.resume_workspace.id
 }
 
 # Storage Account for Function App
