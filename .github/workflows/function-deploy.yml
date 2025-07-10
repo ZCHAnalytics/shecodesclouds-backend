@@ -31,16 +31,17 @@ jobs:
       
       - name: Install Syft
         run: |
-          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
 
       - name: Generate SBOM
-        run: syft ./backend -o json > sbom.json
+        run: syft backend -o json > sbom.json
 
-      - name: Upload SBOM Artifcat
+      - name: Upload SBOM Artifact
         uses: actions/upload-artifact@v3
         with:
           name: sbom
           path: sbom.json
+
           
       - name: Setup Azure Functions Core Tools
         run: |
