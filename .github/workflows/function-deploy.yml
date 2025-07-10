@@ -82,6 +82,9 @@ jobs:
             exit 1
           fi
 
+      - name: List backend tests folder
+        run: ls -l backend/tests/
+
       - name: Run Backend Auth Tests
         run: |
           pip install pytest requests
