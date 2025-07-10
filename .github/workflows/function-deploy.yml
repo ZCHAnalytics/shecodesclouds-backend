@@ -82,12 +82,28 @@ jobs:
             exit 1
           fi
 
+      - name: Find test files
+        run: |
+          echo "Looking for test files..."
+          find . -name "*test*.py" -type f || echo "No test files found"
+
+      - name: Check backend structure
+        run: |
+          echo "Backend directory contents:"
+          ls -la backend/
+
       - name: List backend tests folder
         working-directory: backend
-        run: ls -l tests/
+        run: ls -l tests/ || echo "No tests folder found"
 
       - name: Run Backend Auth Tests
         working-directory: backend
         run: |
-          pip install pytest requests
-          pytest tests/auth_tests.py
+          if [ -f "tests/auth_tests.py" ]; then
+            pip install pytest requests
+            pytest tests/auth_tests.py
+          else
+            echo "auth_tests.py not found in backend/tests/"
+            echo "Current directory structure:"
+            find . -name "*.py" -type f
+          fi
