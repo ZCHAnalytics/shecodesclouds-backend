@@ -37,7 +37,7 @@ jobs:
         run: syft backend -o json > sbom.json
 
       - name: Upload SBOM Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sbom
           path: sbom.json
