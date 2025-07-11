@@ -67,20 +67,7 @@ jobs:
           grype sbom:sbom.json --fail-on critical -o table
       # ------------------------------------------------------------------------
 
-      # --------------------- Load Terraform Output ----------------------
-      - name: Download Terraform Outputs
-        uses: actions/download-artifact@v4
-        with:
-          name: tf-outputs
-          path: tf-outputs
-
-      - name: Read Function App Name
-        id: functionapp
-        run: |
-          FUNC_NAME=$(cat tf-outputs/function_app_name.txt)
-          echo "FUNCTION_APP_NAME=$FUNC_NAME" >> $GITHUB_ENV
-      # -----------------------------------------------------------------
-
+      # --------------------- Set up Azure----------------------
 
       - name: Setup Azure Functions Core Tools
         run: |
@@ -93,6 +80,10 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # ------------------------------------------------------------------------
+
+      # --------------------- Deploy and Test Function----------------------
 
       - name: Deploy Function
         working-directory: backend
