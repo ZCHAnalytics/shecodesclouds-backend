@@ -8,7 +8,6 @@
 resource_group_name     = "resume-backend-rg"               # Used for all Azure resources
 location                = "uksouth"                         # Azure region for deployment
 
-# storage_account_name    = "zchresumestrbackend"             # Currently unused (reserved for future or blob/CDN use)
 cdn_endpoint_name       = "shecodesclouds"                  # Reserved for CDN if used in future
 
 frontend_origin_urls    = ["https://shecodesclouds.azureedge.net"] # CORS whitelist for Function App

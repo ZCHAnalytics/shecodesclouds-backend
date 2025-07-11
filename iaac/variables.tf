@@ -15,12 +15,6 @@ variable "location" {
   # Used in: Resource group, Function App, Cosmos DB, etc.
 }
 
-#variable "storage_account_name" {
- # description = "Name of the storage account"
- # type        = string
-  # Currently unused (not referenced in main.tf as of now)
-#}
-
 variable "cdn_endpoint_name" {
   description = "Name of the CDN endpoint"
   type        = string
