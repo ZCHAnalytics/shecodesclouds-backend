@@ -106,7 +106,7 @@ jobs:
           echo "- **CosmosDB**: $(terraform output -raw cosmosdb_endpoint)" >> $GITHUB_STEP_SUMMARY
 
           # Extract Cosmos DB key silently without printing it
-          Cosmos_KEY=$(terraform output -json | jq -r .cosmodb_primary_key.value)
+          Cosmos_KEY=$(terraform output -json | jq -r .cosmosdb_primary_key.value)
 
           # Print function URL only if valid (starts with https:// and has no spaces)
           echo "- **Function App**: $(terraform output -raw function_app_url | grep -E '^https://[^ ]+$')" >> $GITHUB_STEP_SUMMARY
