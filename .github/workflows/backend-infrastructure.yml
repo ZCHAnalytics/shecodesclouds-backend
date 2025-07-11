@@ -75,7 +75,14 @@ jobs:
       - name: Terraform Apply
         working-directory: iaac
         run: terraform apply -auto-approve plan.tfplan
+        
+      - name: Debug Terraform Outputs
+        working-directory: iaac
+        run: |
+          echo "🔍 Terraform Outputs (raw):"
+          terraform output -json
 
+          
       - name: Output Details
         working-directory: iaac
         run: |
