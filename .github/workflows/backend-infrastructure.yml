@@ -96,7 +96,9 @@ jobs:
           echo "Terraform state files:"
           ls -l .terraform/terraform.tfstate
           echo "🔍 Terraform Outputs (raw):"
-          terraform output -json           # Uncomment only for debugging
+          terraform output -json 2>/dev/null > output.json
+          cat output.json
+          jq -r '.cosmosdb_primary_key.value // empty' output.json           # Uncomment only for debugging
           
           # Avoid printing sensitive keys here
 
@@ -109,7 +111,11 @@ jobs:
           echo "- **CosmosDB**: $(terraform output -raw cosmosdb_endpoint)" >> $GITHUB_STEP_SUMMARY
 
           # Extract Cosmos DB key silently without printing it
-          Cosmos_KEY=$(terraform output -json | jq -r '.cosmosdb_primary_key.value // empty ')
+          
+          Cosmos_KEY=$(terraform output -raw cosmosdb_primary_key)
+
+
+          # Cosmos_KEY=$(terraform output -json 2>/dev/null | jq -r '.cosmosdb_primary_key.value // empty ')
           if [ -z "$Cosmos_KEY" ]; then
             echo "Error: cosmosdb_primary_key not found in terraform outputs"
             exit 1
