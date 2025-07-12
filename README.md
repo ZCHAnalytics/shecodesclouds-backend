@@ -1,14 +1,28 @@
+# Azure Cloud Resume Challenge — Backend API
 
-## 🚀 Deployment
+This repository contains the backend API for the Cloud Resume Challenge, implemented as an Azure Function app with Cosmos DB to provide a dynamic visitor counter.
 
-Deployment is fully automated via GitHub Actions:
+## Overview
 
-1. **Infrastructure**: Push to `main` triggers Terraform deployment
-2. **Function Code**: Automatically deploys after infrastructure updates
+This backend service powers the unique visitor counter on the frontend resume site and exposes API endpoints for visitor tracking.
 
-## 🔧 Local Development
+### Challenge Steps Completed & Enhancements
 
-```bash
-# Using conda
-conda activate resume_env
-pip install -r backend/requirements.txt
+- Built using **Python Azure Functions** with Cosmos DB for persistent, scalable data storage.
+- Fully automated infrastructure deployment via **Terraform**, managed through GitHub Actions.
+- Implemented **CI/CD pipelines** that:
+  - Deploy infrastructure (IaC) changes from `iaac/` directory.
+  - Deploy backend function app only after successful infrastructure provisioning.
+- Added **Software Bill of Materials (SBOM)** generation with Syft and vulnerability scanning using Grype to improve supply chain security.
+- Modular workflows using smart triggers to deploy only when necessary.
+- Ensured **workflow security** and permissions are locked down in GitHub Actions.
+
+---
+
+### Prerequisites
+
+- Python 3.10+
+- Azure Functions Core Tools
+- Terraform CLI
+- Node.js 
+
