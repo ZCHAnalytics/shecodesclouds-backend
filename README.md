@@ -19,10 +19,4 @@ This backend service powers the unique visitor counter on the frontend resume si
 
 ---
 
-### Prerequisites
-
-- Python 3.10+
-- Azure Functions Core Tools
-- Terraform CLI
-- Node.js 
 
