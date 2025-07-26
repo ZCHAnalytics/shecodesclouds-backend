@@ -6,14 +6,24 @@ import json
 import traceback
 from datetime import datetime, timezone
 
+## Add on: monitoring
+from opencensus.ext.azure.log_exporter import AzureLogHandler
+
+## FROM TERRAFORM SET VAR
+connection_string = os.environ.get("APPINSIGHTS_CONNECTION_STRING")
+
 app = func.FunctionApp()
 
 # Set logging level
 logging.basicConfig(level=logging.INFO)
 
+## Attach AzureLogHandler to root logger
+logger = logging.getLogger(__name__)
+logger.addHandler(AzureLogHandler(connection_string=connection_string))
+
 @app.route(route="VisitorCounter", auth_level=func.AuthLevel.ANONYMOUS)
 def VisitorCounter(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('===VISITOR COUNTER FUNCTION CALLED ===')
+    logger.info('===VISITOR COUNTER FUNCTION CALLED ===')
     
     # Get visitor ID from query parameter
     visitor_id = req.params.get('visitorId')
@@ -28,13 +38,11 @@ def VisitorCounter(req: func.HttpRequest) -> func.HttpResponse:
     cosmos_endpoint = os.environ.get("COSMOS_ENDPOINT")
     cosmos_key      = os.environ.get("COSMOS_KEY")
     
-    logging.info(f"Cosmos endpoint: {cosmos_endpoint}")
-    logging.info(f"Visitor ID: {visitor_id}")
+    logger.info(f"Cosmos endpoint: {cosmos_endpoint}")
+    logger.info(f"Visitor ID: {visitor_id}")
     
     try:
         # Extract account name from endpoint
-        # From: https://zchresume-cosmos.documents.azure.com:443/
-        # Extract: zchresume-cosmos
         account_name = cosmos_endpoint.split('.')[0].replace('https://', '').replace('http://', '')
 
         # Build  Table API endpoint  
@@ -43,10 +51,10 @@ def VisitorCounter(req: func.HttpRequest) -> func.HttpResponse:
         # Build connection string for Table API
         conn_str = f"DefaultEndpointsProtocol=https;AccountName={account_name};AccountKey={cosmos_key};TableEndpoint={table_endpoint}"
         
-        logging.info(f"Account name: {account_name}")
-        logging.info(f"Table endpoint: {table_endpoint}")
+        logger.info(f"Account name: {account_name}")
+        logger.info(f"Table endpoint: {table_endpoint}")
 
-        logging.info("Creating table service client...")
+        logger.info("Creating table service client...")
         table_service = TableServiceClient.from_connection_string(conn_str)
         
         # Get table clients for both counter and visitors
@@ -60,11 +68,11 @@ def VisitorCounter(req: func.HttpRequest) -> func.HttpResponse:
                 partition_key="visitors",
                 row_key=visitor_id
             )
-            logging.info(f"Returning visitor: {visitor_id}")
+            logger.info(f"Returning visitor: {visitor_id}")
         except Exception:
             # New visitor
             is_new_visitor = True
-            logging.info(f"New visitor: {visitor_id}")
+            logger.info(f"New visitor: {visitor_id}")
             
             # Record the new visitor
             new_visitor = {
@@ -104,7 +112,11 @@ def VisitorCounter(req: func.HttpRequest) -> func.HttpResponse:
             visitor_entity["lastVisit"] = datetime.now(timezone.utc).isoformat()
             visitor_entity["visitCount"] = visitor_entity.get("visitCount", 1) + 1
             visitors_table.upsert_entity(entity=visitor_entity, mode=UpdateMode.MERGE)
-        
+
+        ## Add on: monitoring 
+        logger.info("New visitor recorded", extra={"custom_dimensions": {"visitorId": visitor_id}})
+        logger.info("Visitor count updated", extra={"custom_dimensions": {"uniqueVisitors": current_count}})
+
         # Also track total page views (optional)
         try:
             views_entity = counter_table.get_entity(
@@ -143,7 +155,7 @@ def VisitorCounter(req: func.HttpRequest) -> func.HttpResponse:
             "type": type(e).__name__,
             "traceback": traceback.format_exc()
         }
-        logging.error(f"Detailed error: {json.dumps(error_details)}")
+        logger.error(f"Detailed error: {json.dumps(error_details)}")
         
         return func.HttpResponse(
             json.dumps(error_details),
